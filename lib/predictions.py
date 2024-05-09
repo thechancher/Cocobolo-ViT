@@ -14,7 +14,7 @@ from typing import List, Tuple
 from PIL import Image
 
 # Set device
-device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # Predict on a target image with a target model
 # Function created in: https://www.learnpytorch.io/06_pytorch_transfer_learning/#6-make-predictions-on-images-from-the-test-set
@@ -81,4 +81,11 @@ def pred_and_plot_image(
         f"Class: {class_names[target_image_pred_label]} | Probability: {target_image_pred_probs.max():.3f}"
     )
     plt.axis(False)
+
+    print("Class:")
+    print(class_names[target_image_pred_label])
+    print("Probability")
+    print(target_image_pred_probs.max())
+    print("Probability")
+    print(target_image_pred_probs)
 
