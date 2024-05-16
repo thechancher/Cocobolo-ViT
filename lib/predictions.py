@@ -14,17 +14,19 @@ from typing import List, Tuple
 from PIL import Image
 
 # Set device
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Predict on a target image with a target model
 # Function created in: https://www.learnpytorch.io/06_pytorch_transfer_learning/#6-make-predictions-on-images-from-the-test-set
 def pred_and_plot_image(
     model: torch.nn.Module,
     class_names: List[str],
+    class_labels: List[str],
     image_path: str,
     image_size: Tuple[int, int] = (224, 224),
     transform: torchvision.transforms = None,
     device: torch.device = device,
+    top: int = 5
 ):
     """Predicts on a target image with a target model.
 
@@ -78,14 +80,35 @@ def pred_and_plot_image(
     plt.figure()
     plt.imshow(img)
     plt.title(
-        f"Class: {class_names[target_image_pred_label]} | Probability: {target_image_pred_probs.max():.3f}"
+        f"Class: {class_labels[class_names[target_image_pred_label]]} | Probability: {target_image_pred_probs.max():.3f}"
     )
     plt.axis(False)
 
     print("Class:")
     print(class_names[target_image_pred_label])
+    print("")
+    
     print("Probability")
     print(target_image_pred_probs.max())
-    print("Probability")
+    print("")
+    
+    print("Probabilities")
     print(target_image_pred_probs)
-
+    print("")
+    
+    print("Sorted:")
+    sorted = target_image_pred_probs.sort(descending=True)
+    print("sorted:", sorted)
+    print("")
+    
+    top_index = [sublist[:top].tolist() for sublist in sorted[1]][0]
+    top_names = []
+    top_labels = []
+    for index in top_index:
+        top_names.append(class_names[index])
+        top_labels.append(class_labels[class_names[index]])
+    top_probs = [sublist[:top].tolist() for sublist in sorted[0]][0]
+    
+    data = [{"index": i, "name": n, "label":l, "prob": p} for i, n, l, p in zip(top_index, top_names, top_labels, top_probs)]
+    
+    return data
