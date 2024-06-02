@@ -1,5 +1,6 @@
 dataset
 dataset-cr
 tests
-model
+model/*
+!model/.gitkeep
 install.txt

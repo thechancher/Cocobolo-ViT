@@ -1,17 +1,17 @@
 import os
 import shutil
 
-import os
-
-path = r"C:\Users\yosua\Downloads\BDBR"
+# the path of the complete database
 dataset = r"C:\Users\yosua\Downloads\dataset-full"
+# sorted database output
+path = r"C:\Users\yosua\Downloads\BDBR"
 train_path = os.path.join(dataset, "train")
 test_path = os.path.join(dataset, "test")
 validate_path = os.path.join(dataset, "validate")
 
-for_train = 0.6
-for_test = 0.3
-# for_validate = "...the rest"
+for_train = 0.6 # % of data for train
+for_test = 0.3 # % of data for test
+# for_validate = "...the rest for validate"
 
 def create_folder(path):
     try:
